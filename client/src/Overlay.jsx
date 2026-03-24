@@ -95,9 +95,56 @@ const pickKoreanVoice = (voices, configVoiceURI) => {
   return voices[0] || null;
 };
 
+const buildSpeechText = (template, nickname, count) => {
+  const safeTemplate = template || '{닉네임}님 {개수}캐시 후원 감사합니다!';
+  const formattedCount = Number(count).toLocaleString();
+
+  return safeTemplate
+    .replaceAll('{닉네임}', nickname || '익명')
+    .replaceAll('{금액}', formattedCount)
+    .replaceAll('{개수}', formattedCount)
+    .replaceAll('{종류}', '후원')
+    .replace(/<[^>]*>/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+};
+
 /* =========================
    Overlay Component
 ========================= */
+
+const waitForAudioReady = (audio, signal) =>
+  new Promise((resolve, reject) => {
+    if (signal?.aborted) return reject(new DOMException('aborted', 'AbortError'));
+    if (audio.readyState >= 2) return resolve();
+
+    const cleanup = () => {
+      audio.removeEventListener('loadeddata', onReady);
+      audio.removeEventListener('canplay', onReady);
+      audio.removeEventListener('error', onError);
+      signal?.removeEventListener('abort', onAbort);
+    };
+
+    const onReady = () => {
+      cleanup();
+      resolve();
+    };
+
+    const onError = () => {
+      cleanup();
+      reject(audio.error || new Error('Failed to load audio'));
+    };
+
+    const onAbort = () => {
+      cleanup();
+      reject(new DOMException('aborted', 'AbortError'));
+    };
+
+    audio.addEventListener('loadeddata', onReady, { once: true });
+    audio.addEventListener('canplay', onReady, { once: true });
+    audio.addEventListener('error', onError, { once: true });
+    signal?.addEventListener('abort', onAbort, { once: true });
+  });
 
 const Overlay = () => {
   const [queue, setQueue] = useState([]);
@@ -110,8 +157,30 @@ const Overlay = () => {
     commentSize: 40
   });
 
-  const audioRef = useRef(new Audio());
+  const audioRef = useRef(null);
   const processingRef = useRef(false);
+
+  useEffect(() => {
+    const audio = new Audio();
+    audio.preload = 'auto';
+    audio.crossOrigin = 'anonymous';
+    audio.playsInline = true;
+    audio.autoplay = false;
+    audio.muted = false;
+    audio.defaultMuted = false;
+    audioRef.current = audio;
+
+    return () => {
+      try {
+        audio.pause();
+        audio.src = '';
+        audio.load();
+      } catch {}
+      if (audioRef.current === audio) {
+        audioRef.current = null;
+      }
+    };
+  }, []);
 
   /* ---------- socket & settings ---------- */
   useEffect(() => {
@@ -171,11 +240,17 @@ const Overlay = () => {
   const playAudioWithAbort = (src, signal) =>
     new Promise(async (resolve) => {
       const a = audioRef.current;
+      if (!a) return resolve();
+      let objectUrl = null;
 
       const cleanup = () => {
         a.onended = null;
         a.onerror = null;
         signal?.removeEventListener('abort', onAbort);
+        if (objectUrl) {
+          URL.revokeObjectURL(objectUrl);
+          objectUrl = null;
+        }
         resolve();
       };
 
@@ -193,14 +268,37 @@ const Overlay = () => {
 
       signal?.addEventListener('abort', onAbort, { once: true });
 
-      a.src = src;
-      a.volume = 0.5;
-      a.onended = cleanup;
-      a.onerror = cleanup;
-
       try {
+        a.pause();
+        a.currentTime = 0;
+        a.src = '';
+        a.load();
+
+        // Browser/OBS source playback is more reliable when the file is fully
+        // fetched into a blob URL first instead of streaming the remote URL directly.
+        const response = await fetch(src, { cache: 'no-store' });
+        if (!response.ok) {
+          throw new Error(`Audio fetch failed: ${response.status}`);
+        }
+
+        const blob = await response.blob();
+        objectUrl = URL.createObjectURL(blob);
+
+        a.src = objectUrl;
+        a.volume = 1.0;
+        a.muted = false;
+        a.defaultMuted = false;
+        a.onended = cleanup;
+        a.onerror = (event) => {
+          console.error('[Overlay] audio element error', event, a.error);
+          cleanup();
+        };
+        a.load();
+
+        await waitForAudioReady(a, signal);
         await a.play();
-      } catch {
+      } catch (error) {
+        console.error('[Overlay] audio playback failed', { src, error });
         cleanup();
       }
     });
@@ -214,7 +312,7 @@ const Overlay = () => {
     if (!cleanText) return;
 
     const voices = await ensureVoicesLoaded(1500);
-    const voice = pickKoreanVoice(voices, ttsConfig);
+    const voice = pickKoreanVoice(voices, ttsConfig?.voiceURI);
 
     return new Promise((resolve) => {
       if (signal?.aborted) return resolve();
@@ -286,7 +384,6 @@ const Overlay = () => {
     const count = alertData.amount;
 
     // 1. TTS용 텍스트: 코멘트만 읽기
-    let ttsText = comment || '';
 
     // 2. 표시용 HTML (HTML 태그 포함)
     const formattedNickname = `<span class="nickname-style">${nickname}</span>`;
@@ -314,8 +411,9 @@ const Overlay = () => {
         await playAudioWithAbort(alertData.audioSrc, signal);
       } else if (soundType === 'tts') {
         // 클라이언트 TTS
-        if (ttsText && ttsText.trim()) {
-            await playTTS(ttsText, ttsConfig, signal);
+        const speechText = buildSpeechText(alertData.template, nickname, count);
+        if (speechText) {
+            await playTTS(speechText, ttsConfig, signal);
         }
       } else {
         await sleep(3000, signal);

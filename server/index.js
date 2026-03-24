@@ -159,6 +159,19 @@ const generateTTS = async (text) => {
   }
 };
 
+const buildSpeechText = (template, nickname, count) => {
+  const safeTemplate = template || '{닉네임}님 {개수}캐시 후원 감사합니다!';
+  const formattedCount = Number(count).toLocaleString();
+
+  return safeTemplate
+    .replaceAll('{닉네임}', nickname || '익명')
+    .replaceAll('{금액}', formattedCount)
+    .replaceAll('{개수}', formattedCount)
+    .replaceAll('{종류}', '후원')
+    .replace(/\s+/g, ' ')
+    .trim();
+};
+
 // 4. Trigger Alert
 app.post('/api/trigger', async (req, res) => {
   const { amount, message, preset, template, nickname, comment } = req.body || {};
@@ -183,7 +196,7 @@ app.post('/api/trigger', async (req, res) => {
   let finalSoundType = safePreset.soundType || (serverAudioUrl ? 'file' : 'none');
 
   if (finalSoundType === 'tts') {
-    const ttsText = finalComment;
+    const ttsText = buildSpeechText(effectiveTemplate, finalNickname, amount);
     if (ttsText && ttsText.trim()) {
       const generatedUrl = await generateTTS(ttsText);
       if (generatedUrl) {

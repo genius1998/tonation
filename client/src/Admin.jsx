@@ -194,8 +194,28 @@ const Admin = () => {
   // --- 파일 선택 핸들러 (개별 프리셋용) ---
   const handlePresetFileChange = async (id, type, file) => {
     const url = await handleFileUpload(file);
-    if (url) {
-      updatePreset(id, type, url);
+    if (!url) return;
+
+    let nextPresets = null;
+    setPresets((prev) => {
+      nextPresets = prev.map((p) => {
+        if (p.id !== id) return p;
+
+        const updated = { ...p, [type]: url };
+        if (type === 'audio') {
+          updated.soundType = 'file';
+        }
+        return updated;
+      });
+      return nextPresets;
+    });
+
+    if (nextPresets) {
+      try {
+        await axios.post(`${API_URL}/presets`, nextPresets);
+      } catch (e) {
+        console.error('Failed to persist preset file change', e);
+      }
     }
   };
 
