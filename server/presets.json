@@ -1,0 +1,36 @@
+[
+  {
+    "id": 1766052567234,
+    "minAmount": 0,
+    "maxAmount": 1000,
+    "image": "http://localhost:3001/uploads/1766052573865-120451248.jpg",
+    "audio": "",
+    "soundType": "tts",
+    "duration": 10,
+    "template": "{닉네임}님 {개수}캐시 후원 감사합니다!",
+    "ttsConfig": {
+      "voiceURI": "",
+      "voiceName": "",
+      "rate": 1,
+      "pitch": 1
+    },
+    "isNew": true
+  },
+  {
+    "id": 1765895306204,
+    "minAmount": 1001,
+    "maxAmount": 1200,
+    "image": "",
+    "audio": "http://localhost:3001/uploads/1765899489097-494127932.mp3",
+    "template": "유니버스 레이블님 {개수} 캐시 후원 감사합니다!",
+    "isNew": true,
+    "soundType": "file",
+    "ttsConfig": {
+      "voiceURI": "",
+      "voiceName": "Google 한국의",
+      "rate": 1,
+      "pitch": 1
+    },
+    "duration": 3
+  }
+]

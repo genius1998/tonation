@@ -1,0 +1,470 @@
+/* Reset & Base */
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
+  background-color: #f9f9f9;
+  color: #333;
+}
+
+.admin-wrapper {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+/* --- 상단 테스트 패널 (Sample 2 Style) --- */
+.test-panel-container {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.label {
+  font-size: 14px;
+  font-weight: bold;
+  color: #555;
+  min-width: 80px;
+  display: inline-block;
+}
+
+.url-section, .test-inputs {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.url-controls {
+  display: flex;
+  gap: 8px;
+  flex: 1;
+}
+
+.url-copy-btn {
+  flex: 1;
+  background: linear-gradient(90deg, #909090, #b0b0b0);
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 20px; /* 둥근 버튼 */
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+}
+
+.url-copy-btn.copied {
+  background: #4caf50;
+}
+
+.icon-btn {
+  width: 40px;
+  height: 40px;
+  border: 1px solid #ddd;
+  background: white;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.icon-btn.danger {
+  border-color: #ffcdd2;
+  color: #e53935;
+}
+
+.input-group {
+  display: flex;
+  gap: 10px;
+  flex: 2;
+}
+
+.amount-input, .msg-input {
+  padding: 10px 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 15px;
+}
+
+.amount-input { width: 100px; }
+.msg-input { flex: 1; }
+
+.select-group {
+  display: flex;
+  gap: 10px;
+  flex: 2;
+}
+
+select {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+.test-btn {
+  background: #2979ff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  flex: 1;
+}
+
+.test-btn:hover { background: #2962ff; }
+
+/* --- 글로벌 액션 버튼 --- */
+.global-actions {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.save-btn {
+  background: #2979ff;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 16px;
+  cursor: pointer;
+  flex: 1;
+}
+
+.reset-btn {
+  background: #ffebee;
+  color: #d32f2f;
+  border: 1px solid #ffcdd2;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 16px;
+  cursor: pointer;
+  flex: 1;
+}
+
+.add-btn {
+  background: #4caf50;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* --- 프리셋 카드 (Sample 1 Style) --- */
+.presets-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.preset-card {
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.card-header {
+  background: #f8f9fa;
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #eee;
+}
+
+.range-inputs {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #444;
+}
+
+.range-inputs input {
+  width: 80px;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  text-align: center;
+}
+
+.card-actions button {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  border: none;
+  margin-left: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.fold-btn { background: white; border: 1px solid #ddd; color: #666; }
+.delete-btn { background: #666; color: white; }
+
+.card-body {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.section {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.section .label {
+  margin-top: 10px;
+  width: 100px; /* 고정 너비 */
+}
+
+/* 이미지 섹션 */
+.image-preview-area {
+  width: 300px;
+  height: 120px;
+  background: #f5f5f5;
+  border: 1px dashed #ccc;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.image-preview-area img {
+  max-height: 100%;
+  max-width: 100%;
+}
+
+.image-preview-area .placeholder {
+  color: #aaa;
+  font-size: 12px;
+}
+
+.file-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.file-btn {
+  background: #2979ff;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+  text-align: center;
+  display: inline-block;
+}
+
+.link-btn {
+  background: white;
+  border: 1px solid #2979ff;
+  color: #2979ff;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+/* 텍스트 섹션 */
+.template-input {
+  flex: 1;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.default-text-btn {
+  padding: 10px 15px;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  color: #666;
+  cursor: pointer;
+}
+
+/* 오디오 섹션 (Sample 3 Style) */
+.audio-content {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  flex: 1;
+}
+
+.audio-options {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.checkbox-label {
+  margin-left: auto; /* 우측 정렬 */
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.audio-player-panel {
+  display: flex;
+  gap: 15px;
+  align-items: flex-start;
+}
+
+.player-box {
+  flex: 1;
+  background: #f5f5f5;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  height: 120px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.player-box:hover {
+  background: #eeeeee;
+}
+
+.play-icon {
+  font-size: 40px;
+  color: #a0c4ff;
+  background: white;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-left: 5px; /* 시각적 중앙 정렬 보정 */
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.player-box .filename {
+  position: absolute;
+  bottom: 10px;
+  left: 15px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #555;
+  text-shadow: 1px 1px 0 white;
+}
+
+.audio-btns {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100px;
+}
+
+.file-btn.blue {
+  background: #2979ff;
+  color: white;
+  padding: 10px;
+  text-align: center;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.link-btn {
+  background: #e3f2fd;
+  color: #2979ff;
+  border: 1px solid #bbdefb;
+  padding: 10px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.danger-btn {
+  background: #ffebee;
+  color: #d32f2f;
+  border: 1px solid #ffcdd2;
+  padding: 10px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* TTS 설정 패널 */
+.tts-config-panel {
+  background: #f1f8ff;
+  border: 1px solid #cce5ff;
+  border-radius: 8px;
+  padding: 15px;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.config-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.config-row label {
+  width: 80px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #555;
+}
+
+.config-row select {
+  flex: 1;
+  padding: 5px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.config-row input[type="range"] {
+  flex: 1;
+  cursor: pointer;
+}
+
+.preview-tts-btn {
+  align-self: flex-start;
+  margin-top: 5px;
+  background: #4caf50;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.preview-tts-btn:hover {
+  background: #43a047;
+}

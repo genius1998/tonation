@@ -1,0 +1,58 @@
+/* ... 기존 스타일 유지 ... */
+
+/* TTS 설정 패널 스타일 */
+.tts-config-panel {
+  background: #f1f8ff;
+  border: 1px solid #cce5ff;
+  border-radius: 8px;
+  padding: 15px;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.config-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.config-row label {
+  width: 80px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #555;
+}
+
+.config-row select {
+  flex: 1;
+  padding: 5px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.config-row input[type="range"] {
+  flex: 1;
+  cursor: pointer;
+}
+
+.preview-tts-btn {
+  align-self: flex-start;
+  margin-top: 5px;
+  background: #4caf50;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.preview-tts-btn:hover {
+  background: #43a047;
+}

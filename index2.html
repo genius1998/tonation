@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<body>
+  <textarea id="txt">안녕하세요 무료 TTS 테스트입니다!</textarea><br />
+  <button onclick="sayIt()">재생</button>
+
+  <script type="module">
+    import TTS from "https://cdn.jsdelivr.net/npm/tts.js@latest/dist/tts.esm.js";
+
+    async function sayIt() {
+      const text = document.getElementById("txt").value;
+      const t = new TTS();
+
+      const audioUrl = await t.speak({
+        text,
+        voice: "Korean",
+        format: "wav"
+      });
+
+      const audio = new Audio(audioUrl);
+      audio.play();
+    }
+  </script>
+</body>
+</html>

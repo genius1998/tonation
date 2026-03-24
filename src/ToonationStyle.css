@@ -1,0 +1,195 @@
+@import url('//fonts.googleapis.com/earlyaccess/jejugothic.css');
+
+:root{
+  /* 비율 고정 */
+  --outer-w: 100vw;
+  --outer-h: 100vh;
+
+  --inner-w: 80%; /* 500px -> 80%로 변경하여 화면 크기에 맞게 조정 */
+  --inner-h: 60%; /* 300px -> 60%로 변경 */
+
+  /* 색 */
+  --outer-bg: rgba(0, 0, 0, 0.5); /* 반투명 배경 복원 */
+  --blue: #16C8FF;
+  --white: #ffffff;
+
+  /* 폰트 */
+  --font: "Jeju Gothic", sans-serif;
+
+  /* 텍스트/썸네일 크기 */
+  --thumb-size: 60px; 
+  --thumb-gap: 15px;
+
+  --line1-size: 30px; 
+  --line2-size: 30px; 
+  --line-height: 1.2;
+
+  --comment-size: 40px; /* 코멘트 크기 변수 추가 */
+
+  /* 애니메이션 강도 조절 (여기 숫자를 바꾸면 됩니다) */
+  --nick-scale: 1.2;   /* 닉네임이 커지는 정도 (1.2 = 120%) */
+  --amount-scale: 1.1; /* 금액이 커지는 정도 (1.1 = 110%) */
+}
+
+@keyframes pulse-big {
+  0% { transform: scale(1); }
+  50% { transform: scale(var(--nick-scale)); } 
+  100% { transform: scale(1); }
+}
+
+@keyframes pulse-small {
+  0% { transform: scale(1); }
+  50% { transform: scale(var(--amount-scale)); } 
+  100% { transform: scale(1); }
+}
+
+.nickname-style {
+  color: #16C8FF !important;
+  display: inline-block;
+  font-weight: 900;
+  animation: pulse-big 0.8s infinite ease-in-out;
+  transform-origin: center;
+}
+
+.amount-style {
+  color: #16C8FF !important;
+  display: inline-block;
+  font-weight: 900;
+  animation: pulse-small 0.8s infinite ease-in-out;
+  transform-origin: center;
+}
+
+html, body{
+  height: 100%;
+  margin: 0;
+  background: transparent;
+  font-family: var(--font);
+  overflow: hidden;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.8); /* 가독성 강화 */
+}
+
+.stage{
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 18px;
+  box-sizing: border-box;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.visible {
+  opacity: 1;
+}
+
+.hidden {
+  opacity: 0;
+}
+
+.wrap{
+  width: var(--outer-w);
+  height: var(--outer-h);
+  background: var(--outer-bg);
+  border-radius: 10px;
+  padding: 12px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* 내부 이미지 박스(각진 모서리) */
+.card-img{
+  width: var(--inner-w);
+  height: var(--inner-h);
+  margin: 0 auto;
+  border-radius: 0;
+  overflow: hidden;
+  background: transparent; /* gradient removed */
+}
+
+.title{
+  font-weight: 900;
+  font-size: 56px;
+  color: var(--white);
+  letter-spacing: -1px;
+  line-height: 1;
+  margin-bottom: 10px;
+}
+
+.amount-top{
+  font-weight: 900;
+  font-size: 52px;
+  color: #ff2d2d;
+  letter-spacing: -0.5px;
+  line-height: 1;
+}
+
+/* Flexbox Layout for text flow */
+.row{
+  display: flex;
+  align-items: center; /* 세로 중앙 정렬로 변경 */
+  justify-content: center; /* 가로 중앙 정렬 추가 */
+  gap: var(--thumb-gap);
+  padding: 0; 
+  margin-top: 10px;
+  width: 100%;
+}
+
+.thumb{
+  flex-shrink: 0;
+  width: var(--thumb-size);
+  height: var(--thumb-size);
+  border-radius: 50%;
+  overflow: hidden;
+  margin-top: -15px; /* 썸네일을 살짝 위로 올림 */
+}
+
+.text-area {
+  flex: 1;
+  font-size: var(--line1-size);
+  font-weight: 500;
+  color: var(--white);
+  line-height: 1.2;
+  word-break: keep-all; /* 단어 단위 줄바꿈이 가운데 정렬에 더 예쁨 */
+  text-align: center;   /* 텍스트 가운데 정렬 */
+}
+
+.nickname {
+  color: var(--blue);
+  font-weight: 700;
+  margin-right: 4px;
+}
+
+.thumb img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* 텍스트 블록 */
+.textblock{
+  min-width: 0;
+  color: var(--white);
+  font-weight: 800;
+  letter-spacing: -0.3px;
+  line-height: var(--line-height);
+}
+
+.blue{ color: var(--blue); }
+.white{ color: var(--white); }
+
+.sub{
+  margin-top: auto;
+  text-align: center;
+  font-size: var(--comment-size);
+  font-weight: 500;
+  color: rgba(255,255,255,0.95);
+  letter-spacing: -0.2px;
+  padding-bottom: 12px;
+}

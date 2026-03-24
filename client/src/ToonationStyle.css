@@ -1,0 +1,172 @@
+@import url('//fonts.googleapis.com/earlyaccess/jejugothic.css');
+
+:root{
+  /* --- 설정 변수 --- */
+  
+  /* 썸네일 크기 (sample4 참조: 큼직한 원형) */
+  --thumb-size: 100px;
+  
+  /* 텍스트 크기 */
+  --line1-size: 32px;  /* 상단 알림 텍스트 */
+  --comment-size: 28px; /* 하단 메시지 */
+
+  /* 애니메이션 스케일 (커지는 정도) */
+  --nick-scale: 1.15;   /* 닉네임은 좀 더 크게 */
+  --amount-scale: 1.08; /* 금액은 살짝만 */
+  
+  /* 색상 */
+  --highlight-color: #16C8FF; /* 요청하신 하늘색 */
+  --text-color: #ffffff;
+  --bg-color: rgba(0, 0, 0, 0.7); /* 좀 더 진한 배경 */
+
+  --font: "Jeju Gothic", sans-serif;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  font-family: var(--font);
+  overflow: hidden;
+}
+
+/* 전체 화면 컨테이너 */
+.stage {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center; /* 화면 중앙 정렬 */
+  padding-bottom: 50px; /* 시각적 중심 보정 */
+  box-sizing: border-box;
+}
+
+.visible { opacity: 1; transition: opacity 0.3s ease-in; }
+.hidden { opacity: 0; transition: opacity 0.3s ease-out; }
+
+/* 알림 박스 (Wrap) */
+.wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  
+  /* 너비 제한을 풀어 내용물에 맞춤, 다만 너무 넓어지지 않게 */
+  max-width: 80%; 
+  min-width: 400px;
+  
+  background-color: var(--bg-color);
+  border-radius: 20px;
+  padding: 25px 40px;
+  
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+  text-align: center;
+  
+  /* 텍스트 그림자: 가독성 확보 */
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+}
+
+/* 상단 후원 미디어 (이미지/GIF) */
+.card-img {
+  width: 100%;
+  max-width: 500px;
+  max-height: 300px;
+  margin-bottom: 20px;
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+}
+
+.card-img img {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+/* 썸네일 + 메인 텍스트 영역 (가로 배치) */
+.row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 20px; /* 썸네일과 텍스트 사이 간격 */
+  margin-bottom: 15px;
+  width: 100%;
+}
+
+/* 썸네일 (원형) */
+.thumb {
+  width: var(--thumb-size);
+  height: var(--thumb-size);
+  border-radius: 50%;
+  border: 4px solid #fff; /* 흰색 테두리 */
+  overflow: hidden;
+  flex-shrink: 0;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  background-color: #fff;
+}
+
+.thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* 메인 텍스트 (닉네임 + 금액 + 조사) */
+.text-area {
+  font-size: var(--line1-size);
+  color: var(--text-color);
+  font-weight: 500;
+  line-height: 1.4;
+  text-align: left;
+  word-break: keep-all; /* 단어 단위 줄바꿈 */
+}
+
+/* --- 하단 메시지 (코멘트) --- */
+.sub {
+  font-size: var(--comment-size);
+  color: var(--text-color);
+  font-weight: 400;
+  margin-top: 10px;
+  line-height: 1.5;
+  white-space: pre-wrap; /* 줄바꿈 보존 */
+  word-break: break-word;
+  width: 100%;
+  border-top: 1px solid rgba(255,255,255,0.2);
+  padding-top: 15px;
+}
+
+/* --- 애니메이션 & 하이라이트 --- */
+
+/* 닉네임 스타일 */
+.nickname-style {
+  color: var(--highlight-color) !important;
+  font-weight: 700;
+  display: inline-block; /* transform 적용을 위해 inline-block 필요 */
+  animation: pulse-nick 1s infinite ease-in-out;
+}
+
+/* 금액 스타일 */
+.amount-style {
+  color: var(--highlight-color) !important;
+  font-weight: 700;
+  display: inline-block;
+  animation: pulse-amount 1s infinite ease-in-out;
+}
+
+/* 애니메이션 키프레임 */
+@keyframes pulse-nick {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(var(--nick-scale)); }
+  100% { transform: scale(1); }
+}
+
+@keyframes pulse-amount {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(var(--amount-scale)); }
+  100% { transform: scale(1); }
+}
