@@ -3,9 +3,9 @@
 **MyTonation**은 인터넷 방송인(스트리머)을 위한 고성능, 저지연 후원 알림 솔루션입니다. 투네이션(Toonation)의 핵심 기능을 벤치마킹하여, OBS 브라우저 소스 연동에 최적화된 아키텍처로 설계되었습니다.
 
 ## 📺 Demonstration
-본 프로젝트의 동작 과정을 담은 시연 영상입니다.
+본 프로젝트의 동작 과정을 담은 시연 GIF입니다.
 
-![MyTonation 시연 영상](tts.mp4)
+![MyTonation 시연 GIF](tts.gif)
 
 ## 🚀 Key Features
 
