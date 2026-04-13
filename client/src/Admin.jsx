@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './Admin.css';
 
-const API_URL = 'http://localhost:3001/api';
+const SERVER_URL = `${window.location.protocol}//${window.location.hostname}:4000`;
+const API_URL = `${SERVER_URL}/api`;
 
 const Admin = () => {
   // 데이터 상태

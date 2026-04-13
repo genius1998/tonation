@@ -2,7 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import io from 'socket.io-client';
 import './ToonationStyle.css';
 
-const socket = io('http://localhost:3001');
+const SERVER_URL = `${window.location.protocol}//${window.location.hostname}:4000`;
+const socket = io(SERVER_URL);
 
 /* =========================
    공통 유틸
@@ -185,7 +186,7 @@ const Overlay = () => {
   /* ---------- socket & settings ---------- */
   useEffect(() => {
     // 설정 로드
-    fetch('http://localhost:3001/api/settings')
+    fetch(`${SERVER_URL}/api/settings`)
       .then(res => res.json())
       .then(data => setStyleSettings(data))
       .catch(err => console.error(err));
@@ -407,8 +408,11 @@ const Overlay = () => {
 
       // 1. 메인 오디오 (파일 또는 TTS)
       if (soundType === 'file' && alertData.audioSrc) {
-        // 서버에서 생성된 TTS 파일도 여기서 재생됨
-        await playAudioWithAbort(alertData.audioSrc, signal);
+        // 서버 주소를 붙여서 가져오도록 수정
+        const audioUrl = alertData.audioSrc.startsWith('http') 
+          ? alertData.audioSrc 
+          : `${SERVER_URL}${alertData.audioSrc}`;
+        await playAudioWithAbort(audioUrl, signal);
       } else if (soundType === 'tts') {
         // 클라이언트 TTS
         const speechText = buildSpeechText(alertData.template, nickname, count);
@@ -489,7 +493,7 @@ const Overlay = () => {
       <div className="wrap">
         <div className="card-img">
           <img 
-            src={currentAlert.imageSrc || "/thumbnail.jpg"} 
+            src={currentAlert.imageSrc ? (currentAlert.imageSrc.startsWith('http') ? currentAlert.imageSrc : `${SERVER_URL}${currentAlert.imageSrc}`) : "/thumbnail.jpg"} 
             alt="donation media" 
             style={{ width: '100%', height: '100%', objectFit: 'cover' }}
           />
@@ -497,7 +501,7 @@ const Overlay = () => {
 
         <div className="row">
           <div className="thumb">
-            <img src="/thumbnail.jpg" alt="thumbnail" />
+            <div className="anonymous-text">익명</div>
           </div>
 
           <div 

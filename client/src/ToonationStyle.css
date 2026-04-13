@@ -107,7 +107,17 @@ html, body {
   overflow: hidden;
   flex-shrink: 0;
   box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-  background-color: #fff;
+  background-color: var(--highlight-color); /* 배경색을 하이라이트 색상으로 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.anonymous-text {
+  color: #fff;
+  font-size: 24px;
+  font-weight: bold;
+  letter-spacing: -1px;
 }
 
 .thumb img {
